@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <template id="assets_backend" name="website_scroll_pages assets" inherit_id="web.assets_backend">
+        <template id="assets_backend" name="scroll_pages assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
                 <link rel="stylesheet" href="/tabs_overflow/static/src/css/scroll_pages.css"/>
             </xpath>
