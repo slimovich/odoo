@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="FormRenderingNotebook">
+        <t t-jquery='ul[role="tablist"]' t-operation="replace">
+            <div id="scroller">
+                <div id="scroller-left" class="fa fa-chevron-left btn btn-default oe-pager-button"></div>
+                <div id="scroller-right" class="fa fa-chevron-right btn btn-default oe-pager-button"></div>
+            </div>
+            <div id="wrapper">
+                <ul t-attf-class="nav nav-tabs list #{classnames}" role="tablist">
+                    <li t-foreach="pages" t-as="page" t-att-modifiers="page.modifiers">
+                        <a role="tab" t-attf-href="##{page.id}" t-att-accesskey="page.accesskey" data-toggle="tab">
+                            <t t-esc="page.string"/>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <script>
+                var listItemWidth = [];
+                var wrapper = $('#wrapper').outerWidth();
+
+                var widthOfList = function(){
+                    var itemsWidth = 0;
+
+                    $('.list li').each(function(){
+                        var itemWidth = $(this).outerWidth();
+                        itemsWidth+=itemWidth;
+                    });
+                    return itemsWidth;
+                };
+
+                var listWidthOfItem = function(){
+                    var itemsWidth = 0;
+                    var listItemWidth = [];
+                    $('.list li').each(function(){
+                        var itemWidth = $(this).outerWidth();
+                        itemsWidth+=itemWidth;
+
+                        if (itemsWidth &lt; wrapper) {
+                            return;
+                        }
+
+                        else{
+
+                            if (listItemWidth.length == 0){
+                                listItemWidth.push(itemsWidth - wrapper);
+                            }
+
+                            else {
+                                listItemWidth.push(itemWidth);
+                            }
+                        }
+                    });
+                    return listItemWidth;
+                };
+
+                var getLeftPosi = function(){
+                    return $('.list').position().left;
+                };
+
+                var reAdjust = function(){
+                    if (($('#wrapper').outerWidth()) &lt; widthOfList()) {
+                        $('#scroller-right').show();
+                        $('#scroller-left').show();
+                        $('#scroller-left').addClass('disabled');
+                        listItemWidth = listWidthOfItem();
+                    }
+
+                    else {
+                        $('#scroller-right').hide();
+                        $('#scroller-left').hide();
+                    }
+                }
+
+                reAdjust();
+
+                $(window).on('resize', reAdjust);
+
+                $('#scroller-right').click(function() {
+                    if ($('#scroller-right').hasClass('disabled')){
+                        return false;
+                    }
+
+                    $('#scroller-left').removeClass('disabled');
+
+                    if (listItemWidth.length == 0){
+                        $('#scroller-right').addClass('disabled');
+                    }
+
+                    else {
+                        $('.list').animate({left: "+=-"+listItemWidth[0]+"px"},50,function(){
+                        });
+                        listItemWidth.shift();
+                    }
+                });
+
+                $('#scroller-left').click(function() {
+                    if ($('#scroller-left').hasClass('disabled')){
+                        return false;
+                    }
+                    $('#scroller-left').addClass('disabled');
+                    $('#scroller-right').removeClass('disabled');
+                    listItemWidth = listWidthOfItem();
+
+                    $('.list').animate({left:"-="+getLeftPosi()+"px"},'slow',function(){
+
+                    });
+                });
+            </script>
+        </t>
+    </t>
+
+</templates>
