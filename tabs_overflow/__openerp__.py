@@ -11,7 +11,7 @@
            ],
 
     "qweb": ['static/src/xml/scroll_pages_template.xml',],
-    "images": ['static/description/banner.gif','static/description/banner2.gif'],
+    "images": ['static/description/banner2.gif'],
     "auto_install": False,
     "installable": True
 }
