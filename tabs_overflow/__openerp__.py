@@ -6,6 +6,7 @@
     "category" : "Extra Tools",
     "description": "Add scroll buttons when tabs overflow",
     "summary": "Add scroll buttons when tabs overflow",
+    "license": "LGPL-3",
     "data":[
             "views/scroll_pages.xml",
            ],
